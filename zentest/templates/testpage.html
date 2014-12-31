@@ -1,0 +1,138 @@
+<html>
+<head>
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script>
+$.ajaxSetup({ 
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                     break;
+                 }
+             }
+         }
+         return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     } 
+});
+	$(document).ready(function(){
+		var q;
+		var qq;
+		var number_of_questions;
+		var counter = 0;
+		var answers = [];
+
+		$("#start_test_button").click(function(){
+			counter = 0;
+			answers = []
+			$(this).hide()
+			$("#result").empty();
+
+			get_questions_from_server();
+
+				});
+			
+
+		function get_questions_from_server(){
+			$.get("http://127.0.0.1:8000/api", function(data){
+			q = JSON.stringify(data);
+			qq = JSON.parse(q)
+			console.log(counter);
+			number_of_questions = Object.keys(qq).length;
+			
+			display_question(counter);
+		});
+
+		}	
+		
+
+	function display_question(counter){
+				if (counter<number_of_questions){
+					console.log(counter)
+					object = qq[counter]
+					var question = object['question'];
+					var choices = object['choices'];
+					$("#question").append(question);
+					for (i=0; i<choices.length; i++){
+						$("#choices").append("<input type='radio' name='answer' id='choice' value="+choices[i]['pk']+">"+choices[i]['value']+"");
+						}
+					}
+				else{
+					// console.log(answers);
+					// $("#result").append(JSON.stringify(answers));
+					send_answers_to_server(JSON.stringify(answers))
+				}	
+			}
+
+$(document).on("click", '#choice', function(){
+			var answer; 
+			console.log(counter);
+			answer = $("#choice:checked ").attr('value')
+			updateAnswers(qq[counter]['pk'], answer)	
+			$("#question").empty();
+			$("#choices").empty();
+			counter = counter + 1;
+			display_question(counter);
+		
+		
+		});
+
+function updateAnswers(q, a){
+		answers.push({
+			question:  q,
+			answer: a
+		});
+	}
+
+function send_answers_to_server(a){
+		$.post("/api/", a, function(data,status){
+			$("#result").append(data);
+			$('#start_test_button').show();
+			
+
+
+
+		});
+	};
+
+
+	
+
+	});
+
+	
+
+
+	
+	
+</script>
+</head>
+
+<body>
+
+	<button id="start_test_button">Start</button>
+
+	<div id='questions'>
+		<h3 id="question"></h3>
+		<form id="choices">
+
+
+</form>
+	</div>
+	<h1 id='result'>
+	</h1>
+
+
+</body>
+</html>
+
