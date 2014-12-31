@@ -42,7 +42,12 @@ class HomeView(APIView):
 			if Question.objects.get(id=item['question']).get_answer_id() == int(item['answer']):
 				correct = correct+1
 			
-		result = "%s/%s" %(correct, len(post_data))
+		result = {
+		'correct': correct,
+		'total': len(post_data)
+		} 
+
+		
 		return Response(simplejson.dumps(result))
 
 
