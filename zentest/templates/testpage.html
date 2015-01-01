@@ -70,7 +70,7 @@ $.ajaxSetup({
 					var choices = object['choices'];
 					$("#question").append(question);
 					for (i=0; i<choices.length; i++){
-						$("#choices").append("<div class='col-md-3'><input type='radio' name='answer' id='choice' style='margin:15px;' value="+choices[i]['pk']+">"+choices[i]['value']+"</div>");
+						$("#choices").append("<div class='col-sm-6 col-md-3'><h4><input type='radio' name='answer' id='choice' style='margin:15px;' value="+choices[i]['pk']+">"+choices[i]['value']+"</h4></div>");
 						}
 					}
 				else{
@@ -124,38 +124,62 @@ function send_answers_to_server(a){
 	
 	
 </script>
+
+<style>
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+</style>
 </head>
 
 <body>
-<div class="container text-center" style='background-color:yellow;'>
-	<div class="row" style="background-color:;margin-top:10%;">
+<div class="container text-center" style='background-color:;margin-top:10%;height:30%;width:;'>
+	<div class="row" style="background-color:;margin-top:5%;">
 		<div class='col-lg-12'>
 		<div id='questions'>
 		<h3 id="question"></h3>
 		</div>
-		<div class='row' style="margin-top:5%;">
+		</div>
+		</div>
+</div>
+	
+	<div class="container text-center" style='background-color:;margin:;'>
+
+		
+
+		<div class='row' style="margin-top:;">
 		<div class='col-lg-12'>
-			<div class='col-lg-2'>
+			<div class='col-lg-1'>
 			</div>
-			<div class='col-lg-8'>
+			<div class='col-lg-10'>
 				<form id="choices"></form>
 			</div>
-		<div class='col-lg-2'>
+		<div class='col-lg-1'>
 			</div>
 		</div>
-		</div>
-	</div>
 
 		<div id="result">
 		</div>
+
+		<button class="btn btn-primary btn-lg" type="button" id="start_test_button" style="margin:25px;">Start</button>
+
+		
+
+		</div>
+
 		
 	
 
-	</div>
-
-	<button class="btn btn-primary" type="button" id="start_test_button" style="margin:25px;">Start</button>
-
+	
 </div>
+
+	
+
+
 	
 
 	
