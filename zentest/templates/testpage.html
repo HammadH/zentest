@@ -67,7 +67,7 @@ $.ajaxSetup({
 					var choices = object['choices'];
 					$("#question").append(question);
 					for (i=0; i<choices.length; i++){
-						$("#choices").append("<input type='radio' name='answer' id='choice' style='margin:15px;' value="+choices[i]['pk']+">"+choices[i]['value']+"");
+						$("#choices").append("<div class='col-md-3'><input type='radio' name='answer' id='choice' style='margin:15px;' value="+choices[i]['pk']+">"+choices[i]['value']+"</div>");
 						}
 					}
 				else{
@@ -124,13 +124,23 @@ function send_answers_to_server(a){
 </head>
 
 <body>
-<div class="container text-center">
+<div class="container text-center" style='background-color:yellow;'>
 	<div class="row" style="background-color:;margin-top:10%;">
+		<div class='col-lg-12'>
 		<div id='questions'>
 		<h3 id="question"></h3>
-		
-		<form id="choices"></form>
-		
+		</div>
+		<div class='row' style="margin-top:5%;">
+		<div class='col-lg-12'>
+			<div class='col-lg-2'>
+			</div>
+			<div class='col-lg-8'>
+				<form id="choices"></form>
+			</div>
+		<div class='col-lg-2'>
+			</div>
+		</div>
+		</div>
 	</div>
 
 		<div id="result">
