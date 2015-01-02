@@ -2,26 +2,35 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 from django.contrib import admin
-
-#class Teacher(AbstractUser):
-
-
-
-#
-
-
-
-
+from django.utils.text import slugify
+from django.core.urlresolvers import reverse
 
 class QuestionSet(models.Model):
-	name = models.CharField(max_length=100, blank=True)
+	name = models.CharField(max_length=100, blank=True, unique=True)
+	slug = models.SlugField(max_length=150, blank=True, unique=True)
 
 	def __unicode__(self):
 		return self.name
 
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.name)
+		super(QuestionSet, self).save(*args, **kwargs)
+
+	def get_absolute_url(self):
+		return reverse('test_details_view', args=(self.slug,))
+
+	def questions_count(self):
+		return self.questions.count()
+
+	def add_question(self):
+		return reverse('add_question', args=(self.slug,))
+
+	def start_test(self):
+		return reverse('start_test', args=(self.slug,))
+
 class Question(models.Model):
 	question = models.TextField()
-	question_set = models.ForeignKey(QuestionSet, null=True)
+	question_set = models.ForeignKey(QuestionSet, null=True, related_name='questions')
 
 	def __unicode__(self):
 		return self.question

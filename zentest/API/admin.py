@@ -20,4 +20,5 @@ class QuestionSetAdmin(admin.ModelAdmin):
 
 admin.site.register(QuestionSet, QuestionSetAdmin)
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Choice)
 
