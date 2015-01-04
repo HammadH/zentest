@@ -1,13 +1,19 @@
 from django.db import models
 
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User 
 from django.contrib import admin
 from django.utils.text import slugify
 from django.core.urlresolvers import reverse
 
+
+
 class QuestionSet(models.Model):
 	name = models.CharField(max_length=100, blank=True, unique=True)
 	slug = models.SlugField(max_length=150, blank=True, unique=True)
+	author = models.ForeignKey(User, blank=False, null=True)
+	is_private = models.NullBooleanField(default=False, null=True)
+	requires_login = models.NullBooleanField(default=False, null=True)
+	created_at = models.DateTimeField(auto_now_add=True, null=True)
 
 	def __unicode__(self):
 		return self.name
@@ -31,6 +37,7 @@ class QuestionSet(models.Model):
 class Question(models.Model):
 	question = models.TextField()
 	question_set = models.ForeignKey(QuestionSet, null=True, related_name='questions')
+	author = models.ForeignKey(User, blank=True, null=True)
 
 	def __unicode__(self):
 		return self.question

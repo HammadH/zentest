@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 from API.models import *
 
@@ -35,7 +36,16 @@ class ChoiceForm(forms.ModelForm):
 	# 	import pdb;pdb.set_trace()
 	# 	self.fields['is_answer'].widget.attrs = {'name':kwargs.get('id')}
 	
-	
+class UserRegistrationForm(forms.ModelForm):
+	class Meta:
+		model = User
+		fields = ('email', 'username', 'password')
+
+	def save(self, *args, **kwargs):
+		user = super(UserRegistrationForm, self).save(commit=False, *args, **kwargs)
+		user.set_password(self.cleaned_data['password'])
+		user.save()
+
 
 
 

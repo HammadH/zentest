@@ -6,8 +6,11 @@ from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
-
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
 
 from API.models import *
 from API.forms import *
@@ -17,6 +20,63 @@ from API.serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
+
+
+class LoginRequiredMixin(object):
+
+	@method_decorator(login_required)
+	def dispatch(self, *args, **kwargs):
+		return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
+
+### User Views ###
+
+class Login(FormView):
+	template_name = "login.html"
+	form_class = AuthenticationForm
+
+	def form_valid(self, form):
+		username = form.cleaned_data['username']
+		password = form.cleaned_data['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			login(self.request, user)
+			return HttpResponseRedirect(self.request.GET['next'])
+		else: ## this is unchecked
+			return HttpResponseRedirect(reverse('login', kwargs={'next':self.request.GET.get('next'), 
+					'message':'Username or Password was incorrect!'}))
+
+	def get_context_data(self, **kwargs):
+		context = super(Login, self).get_context_data(**kwargs)
+		context['next'] = self.request.GET.get('next', '/')
+		return context
+
+	
+class Logout(View):
+	def get(self, request, *args, **kwargs):
+		logout(request)
+		return HttpResponseRedirect(reverse('home'))
+
+class UserRegistration(FormView):
+	template_name = 'user_registration.html'
+	form_class = UserRegistrationForm
+
+	def form_valid(self, form):
+		form.save()
+		username = form.cleaned_data['username']
+		password = form.cleaned_data['password']
+		user = authenticate(username=username, password=password)
+		login(self.request, user)
+		return HttpResponseRedirect(self.request.GET['next'])
+
+	def get_context_data(self, **kwargs):
+		context = super(UserRegistration, self).get_context_data(**kwargs)
+		context['next'] = self.request.GET['next']
+		return context
+
+
+
+#####################
 
 class LoadQuestions(APIView):
 	
@@ -49,7 +109,6 @@ class LoadQuestions(APIView):
 		'total': len(post_data)
 		} 
 
-		
 		return Response(simplejson.dumps(result))
 
 class LoadTestPage(TemplateView):
@@ -66,7 +125,8 @@ class TestDetails(View):
 		return render_to_response('test_detail.html', {'test': questionSet})
 
 
-class CreateNewQuestionSet(FormView):
+class CreateNewQuestionSet(LoginRequiredMixin, FormView):
+	login_url = '/login/'
 	form_class = NewQuestionSetForm
 	template_name = 'new_questionset.html'
 
@@ -139,7 +199,7 @@ class AddQuestion(View):
 class IndexView(View):
 	def get(self, request, *args, **kwargs):
 		questionSets = QuestionSet.objects.all()
-		return render_to_response('home.html', {'questionsets': questionSets})
+		return render_to_response('home.html', {'questionsets': questionSets}, RequestContext(request))
 
 index = IndexView.as_view()
 

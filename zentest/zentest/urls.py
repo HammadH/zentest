@@ -11,5 +11,9 @@ urlpatterns = patterns('',
     url(r'^test/(?P<slug>[\w-]+)/add/$', csrf_exempt(views.AddQuestion.as_view()), name='add_question'),
     url(r'^test/(?P<slug>[\w-]+)/start/$', csrf_exempt(views.LoadTestPage.as_view()), name='start_test'),
     url(r'^test/(?P<slug>[\w-]+)/load/$', csrf_exempt(views.LoadQuestions.as_view()), name='load_questions'),
+    url(r'^accounts/login/$', views.Login.as_view(), name='login'),
+    url(r'^accounts/logout/$', views.Logout.as_view(), name='logout'),
+    url(r'^accounts/signup/$', views.UserRegistration.as_view(), name='register'),
+
     url(r'^admin/', include(admin.site.urls)),
 )
