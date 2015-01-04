@@ -111,7 +111,7 @@ class LoadQuestions(APIView):
 
 		return Response(simplejson.dumps(result))
 
-class LoadTestPage(TemplateView):
+class LoadTestPage(LoginRequiredMixin, TemplateView):
 	template_name = 'testpage.html'
 
 	def get_context_data(self, **kwargs):
@@ -140,7 +140,7 @@ class CreateNewQuestionSet(LoginRequiredMixin, FormView):
 createQuestionSet = CreateNewQuestionSet.as_view()
 
 
-class AddQuestion(View):
+class AddQuestion(LoginRequiredMixin, View):
 	def get(self, request, *args, **kwargs):
 		forms = {
 		'questionForm': QuestionForm(),
