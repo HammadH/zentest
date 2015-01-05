@@ -48,6 +48,9 @@ class Question(models.Model):
 		except:
 			return None
 
+	def get_answer(self):
+		return self.choices.filter(is_answer=1)[0].value
+
 class Choice(models.Model):
 	question = models.ForeignKey(Question, related_name='choices', null=True)
 	value = models.CharField(max_length=225)

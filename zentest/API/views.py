@@ -97,14 +97,29 @@ class LoadQuestions(APIView):
 
 	def post(self, request, *args, **kwargs):
 		post_data = simplejson.loads(self.request.POST.keys()[0])
-		correct = 0
-		#questions = Question.objects.filter(id__in=[item['question'] for item in post_data])
+		correct = []
+		wrong = []
+		#creating question objects with answer keys
+		question_objs_with_keys = []
+		
 		for item in post_data:
-			if Question.objects.get(id=item['question']).get_answer_id() == int(item['answer']):
-				correct = correct+1
-			
+			question_objs_with_keys.append({'answer':item['answer'], 'question_obj':Question.objects.get(id=item['question'])})
+
+		for item in question_objs_with_keys:
+			if item['question_obj'].get_answer_id() == int(item['answer']):
+				correct.append(item['question_obj'])
+			else:
+				wrong.append({'question':item['question_obj'].question, 'answer':item['question_obj'].get_answer()})
+
+		# 	Question.objects.filter(id__in=[item['question'] for item in post_data])
+		# for question in answered_questions:
+		# 	if Question.objects.get(id=item['question']).get_answer_id() == int(item['answer']):
+		# 		correct.append
+
+		
 		result = {
-		'correct': correct,
+		'correct': len(correct),
+		'wrong': wrong,
 		'total': len(post_data)
 		} 
 

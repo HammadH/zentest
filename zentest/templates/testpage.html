@@ -93,8 +93,14 @@ function updateAnswers(q, a){
 function send_answers_to_server(a){
 		$.post("{% url 'load_questions' slug %}", a, function(data,status){
 			var result = JSON.parse(data)
-			$("#result").append("<h1 style='font-size:500%;' id='score'>"+result['correct']+"/"+result['total']+"</h1><h3>Your score</h3>");
+			$("#result").append("<h1 style='font-size:500%;' id='score'>"+result['correct']+"/"+result['total']+"</h1><h4>Your score</h4>");
 			$("#retake_button").show()
+			var wrong_answers = result['wrong']
+			$("#wrong_answers").append("<br><h2>Correct answers are:</h2><br>")
+			for (i=0; i< wrong_answers.length; i++){
+				$("#wrong_answers").append("<h3>"+wrong_answers[i]['question']+": "+wrong_answers[i]['answer']+"</h3><br>");
+			}
+			
 		});
 	};
 	});
@@ -112,6 +118,7 @@ function send_answers_to_server(a){
 </head>
 
 <body>
+
 <div class="container text-center" style='background-color:;margin-top:10%;height:30%;width:;'>
 	<div class="row" style="background-color:;margin-top:5%;">
 		<div class='col-lg-12'>
@@ -120,9 +127,16 @@ function send_answers_to_server(a){
 		</div>
 		</div>
 		</div>
+
+		<div id="result" style="margin-top:;">
+		</div>
+		<div id='wrong_answers'></div>
+		<a id='retake_button' href="{% url 'start_test' slug %}"><button class='btn btn-lg btn-primary'>ReTake Test</button></a>
+
 </div>
 	
 	<div class="container text-center" style='background-color:;margin:;'>
+
 <div class='row' style="margin-top:;">
 		<div class='col-lg-12'>
 			<div class='col-lg-1'>
@@ -133,13 +147,9 @@ function send_answers_to_server(a){
 		<div class='col-lg-1'>
 			</div>
 		</div>
+</div>
 
-		<div id="result" style="margin-top:-5%;">
-		</div>
-
-		<a id='retake_button' href="{% url 'start_test' slug %}">ReTake Test</a>
-
-		</div>
+		
 </div>
 </body>
 </html>
