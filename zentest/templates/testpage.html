@@ -60,7 +60,7 @@ $.ajaxSetup({
 					var choices = object['choices'];
 					$("#question").append(question);
 					for (i=0; i<choices.length; i++){
-						$("#choices").append("<div class='col-sm-6 col-md-3'><h4><input type='radio' name='answer' id='choice' style='margin:15px;' value="+choices[i]['pk']+">"+choices[i]['value']+"</h4></div>");
+						$("#choices").append("<div class='col-sm-6 col-md-3 text-left'><h4><input type='radio' name='answer' id='choice' style='margin-right:10px;' value="+choices[i]['pk']+">"+choices[i]['value']+"</h4></div>");
 						}
 					}
 				else{
@@ -96,11 +96,12 @@ function send_answers_to_server(a){
 			$("#result").append("<h1 style='font-size:500%;' id='score'>"+result['correct']+"/"+result['total']+"</h1><h4>Your score</h4>");
 			$("#retake_button").show()
 			var wrong_answers = result['wrong']
+			if (wrong_answers.length > 0 ){
 			$("#wrong_answers").append("<br><h2>Correct answers are:</h2><br>")
 			for (i=0; i< wrong_answers.length; i++){
-				$("#wrong_answers").append("<h3>"+wrong_answers[i]['question']+": "+wrong_answers[i]['answer']+"</h3><br>");
+				$("#wrong_answers").append("<h3>"+wrong_answers[i]['question']+"</h3><h3 class='alert alert-success'> "+wrong_answers[i]['answer']+"</h3><br>");
 			}
-			
+			}
 		});
 	};
 	});
@@ -131,7 +132,7 @@ function send_answers_to_server(a){
 		<div id="result" style="margin-top:;">
 		</div>
 		<div id='wrong_answers'></div>
-		<a id='retake_button' href="{% url 'start_test' slug %}"><button class='btn btn-lg btn-primary'>ReTake Test</button></a>
+		<a id='retake_button'  href="{% url 'start_test' slug %}"><button style="margin-bottom:50px" class='btn btn-lg btn-primary'>ReTake Test</button></a>
 
 </div>
 	
@@ -142,7 +143,9 @@ function send_answers_to_server(a){
 			<div class='col-lg-1'>
 			</div>
 			<div class='col-lg-10'>
+				<div class='row'>
 				<form id="choices"></form>
+			</div>
 			</div>
 		<div class='col-lg-1'>
 			</div>
