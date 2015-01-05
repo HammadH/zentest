@@ -1,0 +1,11 @@
+
+
+<form method="POST">{% csrf_token %}
+	{{forms.questionForm}}
+	{{forms.choiceForm_1}}
+	{{forms.choiceForm_2}}
+	{{forms.choiceForm_3}}
+	{{forms.choiceForm_4}}
+	<button type="submit">Add</button>
+</form>
+	<a href="{% url 'test_details_view' slug %}">Finished</a>
