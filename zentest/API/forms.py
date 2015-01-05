@@ -37,9 +37,14 @@ class ChoiceForm(forms.ModelForm):
 	# 	self.fields['is_answer'].widget.attrs = {'name':kwargs.get('id')}
 	
 class UserRegistrationForm(forms.ModelForm):
+	password = forms.CharField(widget=forms.PasswordInput())
 	class Meta:
 		model = User
 		fields = ('email', 'username', 'password')
+
+	def __init__(self, *args, **kwargs):
+		super(UserRegistrationForm, self).__init__(*args, **kwargs)
+		self.fields['username'].help_text = None
 
 	def save(self, *args, **kwargs):
 		user = super(UserRegistrationForm, self).save(commit=False, *args, **kwargs)

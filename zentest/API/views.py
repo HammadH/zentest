@@ -99,7 +99,6 @@ class LoadQuestions(APIView):
 		post_data = simplejson.loads(self.request.POST.keys()[0])
 		correct = 0
 		#questions = Question.objects.filter(id__in=[item['question'] for item in post_data])
-		
 		for item in post_data:
 			if Question.objects.get(id=item['question']).get_answer_id() == int(item['answer']):
 				correct = correct+1
