@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load bootstrap3 %}
 <html>
 <head>
 	<link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
@@ -19,7 +20,7 @@
 	
 {% endif %}
 
-{{form.as_p}}
+{% bootstrap_form form %}
 	<button class='btn btn-lg btn-primary' type="submit">Sign Up</button>
 </form>
 

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
+
 from API.models import *
 
 
@@ -50,7 +51,5 @@ class UserRegistrationForm(forms.ModelForm):
 		user = super(UserRegistrationForm, self).save(commit=False, *args, **kwargs)
 		user.set_password(self.cleaned_data['password'])
 		user.save()
-
-
 
 
