@@ -1,30 +1,93 @@
-<html>
-<head>
+{% extends 'base.html' %}
+{% block seo %}
+<title>TestMaster Free online test maker</title>
+<meta name="Title" content="Online tests and test maker with largest collection of questions." />
+<meta name="description" content="Online free test maker and exam practice tool. Create and practice tests with the largest collection of questions."/>
+{% endblock %}
 
-	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-	<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+{% block main %}
+    <!-- ******PROMO****** -->
+    <section id="promo" class="promo section offset-header">
+        <div class="container text-center">
+            <h2 class="title">Test<span class="highlight">Master</span></h2>
+            <p class="intro" style="color:#074f66">Free Practice Tests with world's largest collection of contributed questions.</p>
+            <div class="btns">
+                <a class="btn btn-warning" href="{% url 'new_question_set' %}" >Create a test</a>
+                
+            </div>
 
-  ga('create', 'UA-58276867-1', 'auto');
-  ga('send', 'pageview');
+            <div class="row" style='margin-top:25px;'>
+                {% for set in questionsets %}
+                <div class="item col-md-4 col-sm-6 col-xs-12" >
+                    <div class="panel panel-default content" style='margin:5px;' >
+                        <a href="{{set.get_absolute_url}}"><h3 style='color:#074f66' class="">{{set.name}}</h3></a>
+                        <p>{{set.description}}</p>
+                        <p style='color:#074f66'>{{set.questions.count}} questions</p>
+                  
+                        
+                    </div><!--//content-->
+                </div><!--//item-->
+                {% endfor %}
+            </div><!--//row-->
+            <ul class="meta list-inline">
+                
+            </ul><!--//meta-->
+        </div><!--//container-->
+       
+    </section><!--//promo-->
 
-</script>
-</head>
-<body>
-	{% if user.is_authenticated %}
-		{{user.username}}
-		<a href = "{% url 'logout' %}">Logout</a>
-	{% else %}
-		<a href = "{% url 'login' %}">Login</a>
-	{% endif %}
-	<a href='/test/new'>Create a test</a>
-	{% for set in questionsets %}
-	<a href="{{set.get_absolute_url}}">{{set}}</a>
-	{% endfor %}
-</body>
-</html>
+    <!-- ******ABOUT****** --> 
+    <section id="about" class="about section">
+        <div class="container text-center">
+            <h2 class="title text-center">How it works</h2>
+            
+            <div class="row">
+                <div class="item col-md-4 col-sm-6 col-xs-12">
+                    <div class="icon-holder" >
+                        <i class="fa  fa-file-text-o "></i>
+                    </div>
+                    <div class="content" style='margin:10px;'>
+                        <h3 class="sub-title">Create tests</h3>
+                        <p>Create tests for your students or yourself. Tests can be private or public. Anyone will be able to take 
+                            public tests. Private tests will require access. There is NO charge for creating tests. It's all free. Let's help and benifit.</p>
+                        <p></p>
+                        
+                    </div><!--//content-->
+                </div><!--//item-->
+      
+             <div class="item col-md-4 col-sm-6 col-xs-12">
+                    <div class="icon-holder">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div class="content" style='margin:10px;'>
+                        <h3 class="sub-title">People add questions</h3>
+                        <p>Public tests are open to people for adding questions relevant to the test, contributing to the knowledge and making the test more resourceful.</p>
+                        <p></p>
+                       
+                    </div><!--//content-->
+                </div><!--//item-->             
+
+            <div class="item col-md-4 col-sm-6 col-xs-12">
+                    <div class="icon-holder">
+                        <i class="fa fa-check-square-o"></i>
+                    </div>
+                    <div class="content" style='margin:10px;'>
+                        <h3 class="sub-title">Practice & take tests</h3>
+                        <p>Give tests to students or take them yourself. Choose from the available tests or create your own and get started. Again, it's all free.</p>
+                        <p></p>
+                       
+                    </div><!--//content-->
+                </div><!--//item-->
+
+            </div><!--//row-->            
+        </div><!--//container-->
+    </section><!--//about-->
+
+   
+          
+            
+
+            
+
+   
+{% endblock %}

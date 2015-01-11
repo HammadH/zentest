@@ -1,11 +1,46 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
 
+	{% block main %}
+	<div class="container text-center">
+	<div class="row text-center" style="margin-top:10%;">
 
-<form method="POST">{% csrf_token %}
-	{{forms.questionForm}}
-	{{forms.choiceForm_1}}
-	{{forms.choiceForm_2}}
-	{{forms.choiceForm_3}}
-	{{forms.choiceForm_4}}
-	<button type="submit">Add</button>
+	<div class='col-md-12' >
+		<div class='col-md-2' >
+		</div>
+		<div class='col-md-8' style='background-color:;'>
+		<h2 class='title' style='color:#074f66'>Add a question</h2>
+			<form method="POST">{% csrf_token %}
+	{% bootstrap_form forms.questionForm %}
+	<div class='col-md-6 col-sm-12 col-xs-12' style='padding:10px;'> 
+	{% bootstrap_form forms.choiceForm_1 %}
+	</div>
+	<div class='col-md-6 col-sm-12 col-xs-12' style='padding:10px;'> 
+	{% bootstrap_form forms.choiceForm_2 %}
+	</div>
+
+	<div class='col-md-6 col-sm-12 col-xs-12' style='padding:10px;'> 
+	{% bootstrap_form forms.choiceForm_3%}
+	</div>
+
+	<div class='col-md-6 col-sm-12 col-xs-12' style='padding:10px;'> 
+	{% bootstrap_form forms.choiceForm_4 %}
+	</div>
+
+	<button class='btn btn-warning' type="submit">Add</button>
 </form>
-	<a href="{% url 'test_details_view' slug %}">Finished</a>
+	<a href="{% url 'test_details_view' slug %}"><button class='btn btn-lg btn-primary' style="margin:50px;">Finished</button></a>
+
+	<p>Thank you! This question will help thousands of students!</p>
+</div>
+	<div class='col-md-2'>
+		</div>
+	</div>
+
+	</div>
+</div>
+	{% endblock %}
+
+
+
+

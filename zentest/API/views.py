@@ -213,7 +213,7 @@ class AddQuestion(LoginRequiredMixin, View):
 class IndexView(View):
 	def get(self, request, *args, **kwargs):
 		questionSets = QuestionSet.objects.all()
-		return render_to_response('home.html', {'questionsets': questionSets}, RequestContext(request))
+		return render_to_response('home.html', {'questionsets': questionSets, 'next': '/'}, RequestContext(request))
 
 index = IndexView.as_view()
 
