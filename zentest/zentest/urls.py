@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', views.Login.as_view(), name='login'),
     url(r'^accounts/logout/$', views.Logout.as_view(), name='logout'),
     url(r'^accounts/signup/$', views.UserRegistration.as_view(), name='register'),
+    url(r'^sms/pay/$', views.SMSPayment.as_view(), name='sms_pay'),
+
 
     url(r'^admin/', include(admin.site.urls)),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

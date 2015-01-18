@@ -1,11 +1,12 @@
 import simplejson
 import random
+import hashlib
 
 from django.views.generic import View, FormView, TemplateView
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -20,6 +21,11 @@ from API.serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
+
+FORTUMO_IP_ADDRESSES = ['79.125.125.1', '79.125.5.205',
+      '79.125.5.95', '54.72.6.126', '54.72.6.27', '54.72.6.17', '54.72.6.23']
+
+FORTUMO_SECRET = 'e8e4239e4e3b470566cc8e1666dabc2c'
 
 
 class LoginRequiredMixin(object):
@@ -77,6 +83,15 @@ class UserRegistration(FormView):
 
 
 #####################
+
+class IndexView(View):
+	def get(self, request, *args, **kwargs):
+		questionSets = QuestionSet.objects.all()
+		return render_to_response('home.html', {'questionsets': questionSets, 'next': '/'}, RequestContext(request))
+
+index = IndexView.as_view()
+
+
 
 class LoadQuestions(APIView):
 	
@@ -203,17 +218,58 @@ class AddQuestion(LoginRequiredMixin, View):
 			}
 			return render('new_question.html', {'forms':forms}, RequestContext(request))
 
+### SMS PAYMENT VIEWS ###
 
+def wrong_signature(params):
+	sorted_param_keys = sorted(params)
+	concat_str = ''
+	for key in sorted_param_keys:
+		if key != 'sig':
+			concat_str += key + '=' + params[key]
+	concat_str += FORTUMO_SECRET
+	sig = hashlib.md5(concat_str).hexdigest()
+	if params['sig'] != sig:
+		return True
+	else:
+		return False
 
-
-
-	
-
-
-class IndexView(View):
+class SMSPayment(View):
 	def get(self, request, *args, **kwargs):
-		questionSets = QuestionSet.objects.all()
-		return render_to_response('home.html', {'questionsets': questionSets, 'next': '/'}, RequestContext(request))
+		"""
+		make security checks (validate IP addresses, check the signature) 
+		to validate that the request came from Fortumo
+		"""
 
-index = IndexView.as_view()
+		
+		if request.META['REMOTE_ADDR'] not in FORTUMO_IP_ADDRESSES:
+			return HttpResponseForbidden()
 
+		if wrong_signature(request.GET):
+			return HttpResponseForbidden()
+
+		sender = request.GET['sender']
+		message = request.GET['message']
+		message_id = request.GET['message_id']
+
+		# hint:use message_id to log your messages
+  		# additional parameters: country, price, currency, operator, keyword, shortcode
+  		# do something with sender and message
+
+  		reply = "Thank you for making payment"
+
+  		status = request.GET['status']
+
+  		if status in ['OK', 'pending']:
+  			return HttpResponse(reply)
+
+  		else:
+  			return HttpResponse('status failed')
+
+
+
+
+
+
+# class SMSBilling(View):
+# 	def get(self, request, *args, **kwargs):
+# 		pass
