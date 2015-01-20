@@ -7,7 +7,7 @@
 {% block main %}
 
         <div class="container text-center">
-	<div class="row text-center" style="margin-top:15%;">
+	<div class="row text-center" style="margin-top:20%;">
 
 	<div class='col-md-12' >
 		<div class='col-md-3' >
@@ -16,9 +16,9 @@
 		
 			<form  method="POST">{% csrf_token %}
 	{% bootstrap_form form %}
-	<button class='btn btn-lg btn-warning' type="submit">Login</button>
+	<button class='btn btn-lg btn-warning' style='margin:25px;' type="submit">Login</button>
 	</form>
-	Don't have an account? <a href="{% url 'register' %}?next={{next}}" style='color:red'>Sign Up</a>
+	Don't have an account? <a href="{% url 'register' %}?next={{next}}" ><h3 style='color:#B22222'>Sign Up</h3></a>
 </div>
 	<div class='col-md-3'>
 		</div>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block seo %}
 <title>TestMaster Free online test maker</title>
 <meta name="Title" content="Online tests and test maker with largest collection of questions." />
@@ -10,25 +11,13 @@
     <section id="promo" class="promo section offset-header">
         <div class="container text-center">
             <h2 class="title">Test<span class="highlight">Master</span></h2>
-            <p class="intro" style="color:#074f66">Free Practice Tests with world's largest collection of contributed questions.</p>
+            <p class="intro" style="color:#074f66">The easiest way create paid online tests for your students.</p>
             <div class="btns">
-                <a class="btn btn-warning" href="{% url 'new_question_set' %}" >Create a test</a>
+                <a class="btn btn-xlg btn-warning" style='background-color:#B22222;' href="{% url 'new_question_set' %}" >Create a test</a>
                 
             </div>
 
-            <div class="row" style='margin-top:25px;'>
-                {% for set in questionsets %}
-                <div class="item col-md-4 col-sm-6 col-xs-12" >
-                    <div class="panel panel-default content" style='margin:5px;' >
-                        <a href="{{set.get_absolute_url}}"><h3 style='color:#074f66' class="">{{set.name}}</h3></a>
-                        <p>{{set.description}}</p>
-                        <p style='color:#074f66'>{{set.questions.count}} questions</p>
-                  
-                        
-                    </div><!--//content-->
-                </div><!--//item-->
-                {% endfor %}
-            </div><!--//row-->
+           
             <ul class="meta list-inline">
                 
             </ul><!--//meta-->
@@ -37,43 +26,53 @@
     </section><!--//promo-->
 
     <!-- ******ABOUT****** --> 
-    <section id="about" class="about section">
-        <div class="container text-center">
-            <h2 class="title text-center">How it works</h2>
+        <div class="jumbotron text-center" >
+            <h2 class="title text-center" style='margin:25px;'>How it works</h2>
             
             <div class="row">
-                <div class="item col-md-4 col-sm-6 col-xs-12">
+                <div class="item col-md-3 col-sm-6 col-xs-12">
                     <div class="icon-holder" >
-                        <i class="fa  fa-file-text-o "></i>
+                        <i class="fa  fa-file-text-o fa-4x"></i>
                     </div>
                     <div class="content" style='margin:10px;'>
-                        <h3 class="sub-title">Create tests</h3>
-                        <p>Create tests for your students or yourself. Tests can be private or public. Anyone will be able to take 
-                            public tests. Private tests will require access. There is NO charge for creating tests. It's all free. Let's help and benifit.</p>
+                        <h3 class="sub-title">Create a test & receive SMS code</h3>
+                        <p>Start by creating a test for your students. Once you have created the test, you will recieve a SMS code for your test.</p>
                         <p></p>
                         
                     </div><!--//content-->
                 </div><!--//item-->
       
-             <div class="item col-md-4 col-sm-6 col-xs-12">
+             <div class="item col-md-3 col-sm-6 col-xs-12">
                     <div class="icon-holder">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-users fa-4x"></i>
                     </div>
                     <div class="content" style='margin:10px;'>
-                        <h3 class="sub-title">People add questions</h3>
-                        <p>Public tests are open to people for adding questions relevant to the test, contributing to the knowledge and making the test more resourceful.</p>
+                        <h3 class="sub-title">Give the SMS code to your students</h3>
+                        <p>Students will then SMS to this code to get access to your test.</p>
                         <p></p>
                        
                     </div><!--//content-->
                 </div><!--//item-->             
 
-            <div class="item col-md-4 col-sm-6 col-xs-12">
+            <div class="item col-md-3 col-sm-6 col-xs-12">
                     <div class="icon-holder">
-                        <i class="fa fa-check-square-o"></i>
+                        <i class="fa fa-mobile fa-4x"></i>
                     </div>
                     <div class="content" style='margin:10px;'>
-                        <h3 class="sub-title">Practice & take tests</h3>
-                        <p>Give tests to students or take them yourself. Choose from the available tests or create your own and get started. Again, it's all free.</p>
+                        <h3 class="sub-title">Students send SMS to take your test</h3>
+                        <p>Students then take your test online on their mobile phones and the result is shared with your.</p>
+                        <p></p>
+                       
+                    </div><!--//content-->
+                </div><!--//item-->
+
+                 <div class="item col-md-3 col-sm-6 col-xs-12">
+                    <div class="icon-holder">
+                        <i class="fa fa-money fa-4x"></i>
+                    </div>
+                    <div class="content" style='margin:10px;'>
+                        <h3 class="sub-title">You earn money</h3>
+                        <p>You get revenue from the cost of SMS the students paid to take your test. The more students take your test, the more you earn. </p>
                         <p></p>
                        
                     </div><!--//content-->
@@ -81,8 +80,43 @@
 
             </div><!--//row-->            
         </div><!--//container-->
-    </section><!--//about-->
 
+<div class="container text-center" style="margin:50px;">
+            <h2 class="title text-center" style='margin:25px;'>SMS cost to take a test</h2>
+            
+            <div class="row">
+                <div class="item col-md-3 col-sm-6 col-xs-12" style='margin:35px;'>
+                    <div class="icon-holder" >
+                       <img class="img-responsive" src = "{% static "assets/images/saudi.png" %}"    >
+                    </div>
+                    <div class="content" style='margin:10px;'>
+                        <h3 class="sub-title">Saudi Arabia</h3>
+                        <p>SR 5.00 per test</p>
+                    </div><!--//content-->
+                </div><!--//item-->
+                    <div class="item col-md-3 col-sm-6 col-xs-12" style='margin:35px;'>
+                    <div class="icon-holder" >
+                       <img class="img-responsive" src = "{% static "assets/images/uae.gif" %}"    >
+                    </div>
+                    <div class="content" style='margin:10px;'>
+                        <h3 class="sub-title">United Arab Emirates</h3>
+                        <p>AED 5.00 per test</p>
+                    </div><!--//content-->
+                </div><!--//item-->
+                    <div class="item col-md-3 col-sm-6 col-xs-12" style='margin:35px;'>
+                    <div class="icon-holder" >
+                       <img class="img-responsive " src = "{% static "assets/images/india.jpg" %}"    >
+                    </div>
+                    <div class="content" style='margin:10px;'>
+                        <h3 class="sub-title">India</h3>
+                        <p>INR 10.00 per test</p>
+                    </div><!--//content-->
+                </div><!--//item-->
+      
+             
+
+            </div><!--//row-->            
+        </div><!--//container-->
    
           
             
